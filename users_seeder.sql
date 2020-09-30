@@ -1,3 +1,5 @@
+## RUN FILE FROM TERMINAL: mysql -p -t < users_seeder.sql
+
 USE adlister_db;
 
 INSERT INTO users
