@@ -25,6 +25,14 @@ CREATE TABLE ads
         ON DELETE CASCADE
 );
 
+# Create the categories table
+CREATE TABLE categories
+(
+    id            INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    category_name VARCHAR(240),
+    PRIMARY KEY (id)
+);
+
 # Linking table from ads to categories
 CREATE TABLE ads_categories
 (
@@ -32,12 +40,4 @@ CREATE TABLE ads_categories
     category_id INT UNSIGNED,
     FOREIGN KEY (ad_id) REFERENCES ads (id),
     FOREIGN KEY (category_id) REFERENCES categories (id)
-);
-
-# Create the categories table
-CREATE TABLE categories
-(
-    id            INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    category_name VARCHAR(240),
-    PRIMARY KEY (id)
 );
