@@ -47,18 +47,4 @@ public class MySQLCategoriesDao implements Categories {
         }
         return allCategories;
     }
-    public Long setAdsCategories(Ad ad, Category category) {
-        String query = "INSERT INTO ads_categories(ad_id, category_id) VALUES (?, ?)";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            stmt.setLong(1, ad.getId());
-            stmt.setLong(2, category.getId());
-            stmt.executeUpdate();
-            ResultSet rs = stmt.getGeneratedKeys();
-            rs.next();
-            return rs.getLong(1);
-        } catch (SQLException e) {
-            throw new RuntimeException("Error setting ad categories", e);
-        }
-    }
 }

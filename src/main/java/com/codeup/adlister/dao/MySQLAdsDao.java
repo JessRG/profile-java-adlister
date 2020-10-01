@@ -1,6 +1,7 @@
 package com.codeup.adlister.dao;
 
 import com.codeup.adlister.models.Ad;
+import com.codeup.adlister.models.Category;
 import com.codeup.adlister.models.User;
 import com.mysql.cj.jdbc.Driver;
 
@@ -112,5 +113,21 @@ public class MySQLAdsDao implements Ads {
         stmt.setLong(1, id);
         ResultSet rs = stmt.executeQuery();
         return rs;
+    }
+
+    @Override
+    public Long setAdCategories(long adId, long catId) {
+        String query = "INSERT INTO ads_categories(ad_id, category_id) VALUES (?, ?)";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            stmt.setLong(1, adId);
+            stmt.setLong(2, catId);
+            stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            rs.next();
+            return rs.getLong(1);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error setting ad categories", e);
+        }
     }
 }

@@ -50,7 +50,7 @@ public class CreateAdServlet extends HttpServlet {
 
             // Create the relationship between ad and category
             for(String catId : categories) {
-                DaoFactory.getAdsDao().setAdsCategories(adId, catId);
+                DaoFactory.getAdsDao().setAdCategories(adId, Long.parseLong(catId));
             }
 
             response.sendRedirect("/ads");
