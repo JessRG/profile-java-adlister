@@ -1,6 +1,7 @@
 package com.codeup.adlister.dao;
 
 import com.codeup.adlister.models.Ad;
+import com.codeup.adlister.models.User;
 import com.mysql.cj.jdbc.Driver;
 
 import java.io.FileInputStream;
@@ -70,5 +71,35 @@ public class MySQLAdsDao implements Ads {
             ads.add(extractAd(rs));
         }
         return ads;
+    }
+
+    // method to grab the user's information from the ad
+    public User getUserInfo(int id) {
+        try {
+            PreparedStatement stmt = userQuery(id);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            return extractUser(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error getting user information.", e);
+        }
+    }
+
+    // method to build up the prepared statement for the user's info
+    public PreparedStatement userQuery(int id) throws SQLException {
+        String query = "SELECT * FROM users WHERE id = ?";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setLong(1, id);
+        return stmt;
+    }
+
+    // method to help extract the user info and create/return User object
+    private User extractUser(ResultSet rs) throws SQLException {
+        return new User(
+            rs.getLong("id"),
+            rs.getString("username"),
+            rs.getString("email"),
+            rs.getString("password")
+        );
     }
 }
