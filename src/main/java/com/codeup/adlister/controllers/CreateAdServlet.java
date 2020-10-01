@@ -28,7 +28,12 @@ public class CreateAdServlet extends HttpServlet {
             .forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Grab the user's entered info for the new ad
+        String title = request.getParameter("title");
+        String description = request.getParameter("description");
+
+
         User user = (User) request.getSession().getAttribute("user");
         Ad ad = new Ad(
             user.getId(),
@@ -37,9 +42,23 @@ public class CreateAdServlet extends HttpServlet {
         );
         DaoFactory.getAdsDao().insert(ad);
 
-        // Grab the currently created ad id
-        // Grab the list of categories from create.jsp
+        try {
+            // Grab the recently created ad id
+            long adId = DaoFactory.getAdsDao().all().size();
+            // Grab the list of categories from create.jsp
+            String[] categories = request.getParameterValues("selectCat");
 
-        response.sendRedirect("/ads");
+            // Create the relationship between ad and category
+            for(String catId : categories) {
+                DaoFactory.getAdsDao().setAdsCategories(adId, catId);
+            }
+
+            response.sendRedirect("/ads");
+        } catch (RuntimeException e) {
+            request.setAttribute("stickyTitle", title);
+            request.setAttribute("stickyDescription", title);
+            request.setAttribute("categories", DaoFactory.getCategoriesDao().all());
+            request.getRequestDispatcher("/WEB-INF/ads/create.jsp").forward(request, response);
+        }
     }
 }
