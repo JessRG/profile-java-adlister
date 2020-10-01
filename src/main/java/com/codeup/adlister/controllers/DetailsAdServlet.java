@@ -16,11 +16,12 @@ public class DetailsAdServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("ads", DaoFactory.getAdsDao().all());
 
-        String adId = request.getParameter("id");
-        int id = Integer.parseInt(adId);
-        request.setAttribute("user", DaoFactory.getAdsDao().getUserInfo(id));
-        //request.setAttribute("user", DaoFactory.getUsersDao().findUserwithAdId(id));
-        //request.setAttribute("category", DaoFactory.getCategoriesDao().findCategorywithAdId(id));
+        String adId = request.getParameter("adId");
+        String userId = request.getParameter("userId");
+        long ad = Long.parseLong(adId);
+        long uid = Long.parseLong(userId);
+        request.setAttribute("ad", DaoFactory.getAdsDao().getAdInfo(ad));
+        request.setAttribute("user", DaoFactory.getAdsDao().getUserInfo(uid));
         request.getRequestDispatcher("/WEB-INF/ads/adDetails.jsp").forward(request, response);
     }
 }

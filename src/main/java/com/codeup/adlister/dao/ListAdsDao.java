@@ -29,7 +29,12 @@ public class ListAdsDao implements Ads {
     }
 
     @Override
-    public User getUserInfo(int id) {
+    public User getUserInfo(long id) {
+        return null;
+    }
+
+    @Override
+    public Ad getAdInfo(long adId) {
         return null;
     }
 

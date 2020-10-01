@@ -56,15 +56,6 @@ public class MySQLAdsDao implements Ads {
         }
     }
 
-    private Ad extractAd(ResultSet rs) throws SQLException {
-        return new Ad(
-            rs.getLong("id"),
-            rs.getLong("user_id"),
-            rs.getString("title"),
-            rs.getString("description")
-        );
-    }
-
     private List<Ad> createAdsFromResults(ResultSet rs) throws SQLException {
         List<Ad> ads = new ArrayList<>();
         while (rs.next()) {
@@ -73,24 +64,25 @@ public class MySQLAdsDao implements Ads {
         return ads;
     }
 
+    private Ad extractAd(ResultSet rs) throws SQLException {
+        return new Ad(
+                rs.getLong("id"),
+                rs.getLong("user_id"),
+                rs.getString("title"),
+                rs.getString("description")
+        );
+    }
+
     // method to grab the user's information from the ad
-    public User getUserInfo(int id) {
+    @Override
+    public User getUserInfo(long id) {
         try {
-            PreparedStatement stmt = userQuery(id);
-            ResultSet rs = stmt.executeQuery();
+            ResultSet rs = queryDb("SELECT * FROM users WHERE id = ?", id);
             rs.next();
             return extractUser(rs);
         } catch (SQLException e) {
             throw new RuntimeException("Error getting user information.", e);
         }
-    }
-
-    // method to build up the prepared statement for the user's info
-    public PreparedStatement userQuery(int id) throws SQLException {
-        String query = "SELECT * FROM users WHERE id = ?";
-        PreparedStatement stmt = connection.prepareStatement(query);
-        stmt.setLong(1, id);
-        return stmt;
     }
 
     // method to help extract the user info and create/return User object
@@ -101,5 +93,24 @@ public class MySQLAdsDao implements Ads {
             rs.getString("email"),
             rs.getString("password")
         );
+    }
+
+    // method to help grab the ad info from the given ad id
+    @Override
+    public Ad getAdInfo(long adId) {
+        try {
+            ResultSet rs = queryDb("SELECT * FROM ads WHERE id = ?", adId);
+            rs.next();
+            return extractAd(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error getting user information.", e);
+        }
+    }
+
+    private ResultSet queryDb(String query, long id) throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setLong(1, id);
+        ResultSet rs = stmt.executeQuery();
+        return rs;
     }
 }

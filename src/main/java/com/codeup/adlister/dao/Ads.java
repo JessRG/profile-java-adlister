@@ -11,6 +11,8 @@ public interface Ads {
     // insert a new ad and return the new ad's id
     Long insert(Ad ad);
 
-    // method to get the user's info from given Ad object
-    User getUserInfo(int id);
+    // method to get the user's info from given id
+    User getUserInfo(long userId);
+    // method to get the ad info from given id
+    Ad getAdInfo(long adId);
 }

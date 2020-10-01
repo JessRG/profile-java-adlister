@@ -13,6 +13,12 @@
 <body>
 <div>
     <p>
+        ${ad.title}
+    </p>
+    <p>
+        ${ad.description}
+    </p>
+    <p>
         ${user.username}
     </p>
     <p>
