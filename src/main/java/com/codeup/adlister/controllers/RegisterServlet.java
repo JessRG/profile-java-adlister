@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet(name = "controllers.RegisterServlet", urlPatterns = "/register")
 public class RegisterServlet extends HttpServlet {
@@ -16,26 +17,42 @@ public class RegisterServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String username = request.getParameter("username");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String passwordConfirmation = request.getParameter("confirm_password");
 
-        // validate input
-        boolean inputHasErrors = username.isEmpty()
-            || email.isEmpty()
-            || password.isEmpty()
-            || (! password.equals(passwordConfirmation));
+        boolean inputHasErrors = !password.equals(passwordConfirmation);
 
         if (inputHasErrors) {
-            response.sendRedirect("/register");
+            request.setAttribute("error", "Passwords do not match!");
+            request.setAttribute("stickyEmail", email);
+            request.setAttribute("stickyUser", username);
+            request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
             return;
         }
 
         // create and save a new user
         User user = new User(username, email, password);
-        DaoFactory.getUsersDao().insert(user);
-        response.sendRedirect("/login");
+
+        try {
+            DaoFactory.getUsersDao().insert(user);
+            response.sendRedirect("/login");
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+
+            SQLException se = (SQLException) e.getCause();
+            System.out.println(se.getSQLState());
+            if ("23000".equals(se.getSQLState())) {
+                request.setAttribute("error", "That username already exists!");
+            } else {
+                request.setAttribute("error", "Invalid Login!");
+            }
+
+            request.setAttribute("stickyEmail", email);
+            request.setAttribute("stickyUser", username);
+            request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
+        }
     }
 }

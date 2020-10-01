@@ -25,8 +25,24 @@ VALUES
 ('food and beverage', 3),
 ('it support', 3),
 ('real estate', 3),
-('security', 3);
+('security', 3),
+('couches',4),
+('tables',4),
+('antiques',4),
+('misc',4),
+('coup',5),
+('car',5),
+('truck',5),
+('suv',5),
+('misc',5),
+('phones',6),
+('tvs',6),
+('computers',6),
+('misc',6);
+
+
 SELECT * FROM categories;
+
 
 
 
