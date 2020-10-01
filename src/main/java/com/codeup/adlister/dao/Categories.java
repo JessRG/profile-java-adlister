@@ -5,6 +5,6 @@ import com.codeup.adlister.models.Category;
 import java.util.List;
 
 public interface Categories {
-    // method will query mysql server for all categories and build a list of Category objects
+    // method to get list of all categories
     List<Category> all();
 }
