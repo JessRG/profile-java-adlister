@@ -1,16 +1,28 @@
 package com.codeup.adlister.dao;
 
 import com.codeup.adlister.models.Category;
+import com.mysql.cj.jdbc.Driver;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MySQLCategoriesDao implements Categories {
     Connection connection;
+
+    // Constructor
+    public MySQLCategoriesDao(Config config) {
+        try {
+            DriverManager.registerDriver(new Driver());
+            connection = DriverManager.getConnection(
+                    config.getUrl(),
+                    config.getUser(),
+                    config.getPassword()
+            );
+        } catch (SQLException e) {
+            throw new RuntimeException("Error connecting to the database!", e);
+        }
+    }
 
     @Override
     public List<Category> all() {
