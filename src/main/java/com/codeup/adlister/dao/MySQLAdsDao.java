@@ -121,7 +121,7 @@ public class MySQLAdsDao implements Ads {
 
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error setting ad categories", e);
+            throw new RuntimeException("Error setting ad categories.", e);
         }
     }
 
@@ -137,7 +137,20 @@ public class MySQLAdsDao implements Ads {
 
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error setting ad categories", e);
+            throw new RuntimeException("Error updating ad.", e);
+        }
+    }
+
+    // method to delete Ad
+    @Override
+    public void deleteAd(long id) {
+        String query = "DELETE FROM ads WHERE id = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setLong(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error deleting ad.", e);
         }
     }
 
