@@ -36,6 +36,20 @@ public class MySQLCategoriesDao implements Categories {
         }
     }
 
+    @Override
+    public List<Category> categoriesByAdId(long adId) {
+        String query = "SELECT * FROM categories AS c" +
+                " JOIN ads_categories AS ac ON ac.category_id = c.id" +
+                " WHERE ac.ad_id = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            return createCategories(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error retrieving ads by category.", e);
+        }
+    }
+
     // method to help extract data from the table categories ResultSet
     private List<Category> createCategories(ResultSet r) throws SQLException {
         List<Category> allCategories = new ArrayList<>();
