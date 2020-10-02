@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "controllers.UpdateAdsServlet", urlPatterns = "/delete")
+@WebServlet(name = "controllers.DeleteAdServlet", urlPatterns = "/delete")
 public class DeleteAdServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // Delete the Ad from the db and then redirect back to user profile page
