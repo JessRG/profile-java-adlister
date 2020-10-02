@@ -125,6 +125,22 @@ public class MySQLAdsDao implements Ads {
         }
     }
 
+    // method to upgrade Ad
+    @Override
+    public void updateAd(long id, String title, String description) {
+        String query = "UPDATE ads SET title = ?, description = ? WHERE id = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, title);
+            stmt.setString(2, description);
+            stmt.setLong(3, id);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error setting ad categories", e);
+        }
+    }
+
     // method to search by ad title or ad description
     @Override
     public List<Ad> search(String searchTerm) {

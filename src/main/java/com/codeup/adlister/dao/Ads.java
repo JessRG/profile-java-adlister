@@ -17,6 +17,9 @@ public interface Ads {
     // method to get the ad info from given id
     Ad getAdInfo(long adId);
 
+    // method to update an ad
+    void updateAd(long id, String title, String description);
+
     //method to get the category info from given id
     void setAdCategories(long adId, long catId);
 
