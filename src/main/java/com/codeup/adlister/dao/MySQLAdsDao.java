@@ -1,13 +1,9 @@
 package com.codeup.adlister.dao;
 
 import com.codeup.adlister.models.Ad;
-import com.codeup.adlister.models.Category;
 import com.codeup.adlister.models.User;
 import com.mysql.cj.jdbc.Driver;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -108,6 +104,37 @@ public class MySQLAdsDao implements Ads {
         }
     }
 
+    private Ad extractAds(ResultSet rs) throws SQLException {
+        return new Ad(
+                rs.getLong("id"),
+                rs.getLong("user_id"),
+                rs.getString("title"),
+                rs.getString("description")
+        );
+    }
+
+    private List<Ad> searchAds(ResultSet rs) throws SQLException {
+        List<Ad> ads = new ArrayList<>();
+        while (rs.next()) {
+            ads.add(extractAds(rs));
+        }
+        return ads;
+    }
+    @Override
+    public List<Ad> search(String searchTerm) {
+        String query = "SELECT * FROM ads AS a JOIN users AS u ON a.user_id = u.id WHERE a.title LIKE ? OR a.description LIKE ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, "%" + searchTerm + "%");
+            stmt.setString(2, "%" + searchTerm + "%");
+            ResultSet rs = stmt.executeQuery();
+            return searchAds(rs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private ResultSet queryDb(String query, long id) throws SQLException {
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setLong(1, id);
@@ -122,9 +149,12 @@ public class MySQLAdsDao implements Ads {
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setLong(1, adId);
             stmt.setLong(2, catId);
+
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error setting ad categories", e);
         }
     }
+
+
 }
