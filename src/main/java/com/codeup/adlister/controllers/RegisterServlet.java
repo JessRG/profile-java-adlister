@@ -23,7 +23,10 @@ public class RegisterServlet extends HttpServlet {
         String password = request.getParameter("password");
         String passwordConfirmation = request.getParameter("confirm_password");
 
-        boolean inputHasErrors = !password.equals(passwordConfirmation);
+        boolean inputHasErrors = username.isEmpty()
+                || email.isEmpty()
+                || password.isEmpty()
+                || !password.equals(passwordConfirmation);
 
         if (inputHasErrors) {
             request.setAttribute("error", "Passwords do not match!");

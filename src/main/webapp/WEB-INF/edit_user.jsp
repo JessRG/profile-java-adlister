@@ -8,11 +8,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %><html>
 <head>
-    <jsp:include page="partials/head.jsp">
+    <jsp:include page="/WEB-INF/partials/head.jsp">
         <jsp:param name="title" value="Edit User"/>
     </jsp:include>
 </head>
-<jsp:include page="partials/navbar.jsp"/>
+<jsp:include page="/WEB-INF/partials/navbar.jsp"/>
 
 <form action="/profile/edit" method="post">
     <label for="new_username"> New Username: </label>

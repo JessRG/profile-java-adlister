@@ -26,8 +26,8 @@ public class MySQLAdsDao implements Ads {
 
     @Override
     public List<Ad> all() {
-        PreparedStatement stmt = null;
         try {
+            PreparedStatement stmt;
             stmt = connection.prepareStatement("SELECT * FROM ads");
             ResultSet rs = stmt.executeQuery();
             return createAdsFromResults(rs);
@@ -144,11 +144,11 @@ public class MySQLAdsDao implements Ads {
     // Overload search method to get ads by category id
     @Override
     public List<Ad> search(long catId) {
-        String query = "SELECT * FROM ads AS a JOIN ads_categories AS ac ON ac.ad_id = a.id WHERE ac.category_id = ?";
+        String query = "SELECT * FROM ads AS a" +
+                " JOIN ads_categories AS ac ON ac.ad_id = a.id" +
+                " WHERE ac.category_id = ?";
         try {
-            PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setLong(1, catId);
-            ResultSet rs = stmt.executeQuery();
+            ResultSet rs = queryDb(query, catId);
             return createAdsFromResults(rs);
         } catch (SQLException e) {
             e.printStackTrace();

@@ -10,6 +10,7 @@
 <jsp:include page="/WEB-INF/partials/navbar.jsp" />
 
 <div class="container">
+    <jsp:include page="/WEB-INF/partials/messages.jsp"/>
     <h1>Welcome, ${sessionScope.user.username}!</h1>
 
     <button><a href="/profile/edit"> Edit Profile</a></button>
