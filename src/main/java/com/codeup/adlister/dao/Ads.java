@@ -19,4 +19,7 @@ public interface Ads {
 //    //method to get the category info from given id
 //    Category getCategoryInfo(long catId);
     Long setAdCategories(long adId, long catId);
+
+    List<Ad> search(String searchTerm);
+
 }

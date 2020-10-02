@@ -108,6 +108,42 @@ public class MySQLAdsDao implements Ads {
         }
     }
 
+    @Override
+    public Long setAdCategories(long adId, long catId) {
+        return null;
+    }
+
+    private Ad extractAds(ResultSet rs) throws SQLException {
+        return new Ad(
+                rs.getLong("id"),
+                rs.getLong("user_id"),
+                rs.getString("title"),
+                rs.getString("description")
+        );
+    }
+
+    private List<Ad> searchAds(ResultSet rs) throws SQLException {
+        List<Ad> ads = new ArrayList<>();
+        while (rs.next()) {
+            ads.add(extractAds(rs));
+        }
+        return ads;
+    }
+    @Override
+    public List<Ad> search(String searchTerm) {
+        String query = "SELECT * FROM ads AS a JOIN users AS u ON a.user_id = u.id WHERE a.title LIKE ? OR a.description LIKE ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, "%" + searchTerm + "%");
+            stmt.setString(2, "%" + searchTerm + "%");
+            ResultSet rs = stmt.executeQuery();
+            return searchAds(rs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private ResultSet queryDb(String query, long id) throws SQLException {
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setLong(1, id);
@@ -115,13 +151,13 @@ public class MySQLAdsDao implements Ads {
         return rs;
     }
 
-    @Override
-    public Long setAdCategories(long adId, long catId) {
+    //@Override
+    public Long setAdsCategories(long ad, long category) {
         String query = "INSERT INTO ads_categories(ad_id, category_id) VALUES (?, ?)";
         try {
             PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            stmt.setLong(1, adId);
-            stmt.setLong(2, catId);
+            stmt.setLong(1, ad);
+            stmt.setLong(2, category);
             stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
             rs.next();
@@ -130,4 +166,6 @@ public class MySQLAdsDao implements Ads {
             throw new RuntimeException("Error setting ad categories", e);
         }
     }
+
+
 }
