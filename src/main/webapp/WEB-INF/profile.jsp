@@ -10,6 +10,7 @@
 <jsp:include page="/WEB-INF/partials/navbar.jsp" />
 
 <div class="container">
+    <jsp:include page="/WEB-INF/partials/messages.jsp"/>
     <h1>Welcome, ${sessionScope.user.username}!</h1>
 
     <button><a href="/profile/edit"> Edit Profile</a></button>
@@ -21,8 +22,8 @@
             <div>
                 <h2> <c:out value="${ad.title}"/> </h2>
                 <p> <c:out value="${ad.description}"/> </p>
-                <form class= "ad_btn" action="/edit" method="get">
-                    <button class="ad_btn" type="submit" name="adId" value="${ad.id}"> Edit Ad </button>
+                <form class= "ad_btn" action="/update" method="get">
+                    <button class="ad_btn" type="submit" name="update_id" value="${ad.id}"> Edit Ad </button>
                 </form>
                 <form class= "ad_btn" action="/delete" method="post">
                     <button type="submit" name="delete_this_ad" value="${ad.id}">Delete Ad</button>
