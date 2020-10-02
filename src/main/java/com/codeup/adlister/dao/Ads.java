@@ -13,11 +13,15 @@ public interface Ads {
 
     // method to get the user's info from given id
     User getUserInfo(long userId);
+
     // method to get the ad info from given id
     Ad getAdInfo(long adId);
-//    //method to get the category info from given id
-//    Category getCategoryInfo(long catId);
+
+    //method to get the category info from given id
     void setAdCategories(long adId, long catId);
 
     List<Ad> search(String searchTerm);
+
+    //Overload
+    List<Ad> search(long catId);
 }

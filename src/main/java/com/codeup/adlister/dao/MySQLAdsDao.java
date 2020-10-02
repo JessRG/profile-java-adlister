@@ -104,37 +104,6 @@ public class MySQLAdsDao implements Ads {
         }
     }
 
-    private Ad extractAds(ResultSet rs) throws SQLException {
-        return new Ad(
-                rs.getLong("id"),
-                rs.getLong("user_id"),
-                rs.getString("title"),
-                rs.getString("description")
-        );
-    }
-
-    private List<Ad> searchAds(ResultSet rs) throws SQLException {
-        List<Ad> ads = new ArrayList<>();
-        while (rs.next()) {
-            ads.add(extractAds(rs));
-        }
-        return ads;
-    }
-    @Override
-    public List<Ad> search(String searchTerm) {
-        String query = "SELECT * FROM ads AS a JOIN users AS u ON a.user_id = u.id WHERE a.title LIKE ? OR a.description LIKE ?";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setString(1, "%" + searchTerm + "%");
-            stmt.setString(2, "%" + searchTerm + "%");
-            ResultSet rs = stmt.executeQuery();
-            return searchAds(rs);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     private ResultSet queryDb(String query, long id) throws SQLException {
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setLong(1, id);
@@ -156,5 +125,34 @@ public class MySQLAdsDao implements Ads {
         }
     }
 
+    // method to search by ad title or ad description
+    @Override
+    public List<Ad> search(String searchTerm) {
+        String query = "SELECT * FROM ads AS a JOIN users AS u ON a.user_id = u.id WHERE a.title LIKE ? OR a.description LIKE ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, "%" + searchTerm + "%");
+            stmt.setString(2, "%" + searchTerm + "%");
+            ResultSet rs = stmt.executeQuery();
+            return createAdsFromResults(rs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
+    // Overload search method to get ads by category id
+    @Override
+    public List<Ad> search(long catId) {
+        String query = "SELECT * FROM ads AS a JOIN ads_categories AS ac ON ac.ad_id = a.id WHERE ac.category_id = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setLong(1, catId);
+            ResultSet rs = stmt.executeQuery();
+            return createAdsFromResults(rs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
