@@ -20,16 +20,13 @@
             <textarea id="description" name="description" class="form-control" type="text"></textarea>
         </div>
         <div>
-            <div class="col-md-6">
-            <c:set var="count" value="0" scope="page" />
+            <label>
+<%--            <c:set var="count" value="0" scope="page" />--%>
+                <span>Categories: </span>
             <c:forEach var="cat" items="${allCategories}">
-                    <input type="checkbox" value="${cat.id}" id="${count + 1}" name="categories">
-                    <label for="${count + 1}">
-                            <c:out value = "${cat.name}"></c:out>
-                    </label>
-                    <c:set var="count" value="${count + 1}" scope="page"/>
+                    <input type="checkbox" value="${cat.id}" name="category"> ${cat.name}
             </c:forEach>
-                </div>
+                </label>
             </div>
         <input type="submit" class="btn btn-block btn-primary">
     </form>

@@ -18,5 +18,5 @@ public interface Ads {
     Ad getAdInfo(long adId);
 //    //method to get the category info from given id
 //    Category getCategoryInfo(long catId);
-    Long setAdCategories(long adId, long catId);
+    void setAdCategories(long adId, long catId);
 }
