@@ -26,7 +26,7 @@
                     <button class="ad_btn" type="submit" name="update_id" value="${ad.id}"> Edit Ad </button>
                 </form>
                 <form class= "ad_btn" action="/delete" method="post">
-                    <button type="submit" name="delete_this_ad" value="${ad.id}">Delete Ad</button>
+                    <button type="submit" name="delete_ad" value="${ad.id}">Delete Ad</button>
                 </form>
             </div>
         </c:forEach>

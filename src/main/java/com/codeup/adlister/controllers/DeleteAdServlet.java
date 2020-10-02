@@ -12,7 +12,7 @@ import java.io.IOException;
 public class DeleteAdServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // Delete the Ad from the db and then redirect back to user profile page
-        long adId = Long.parseLong(request.getParameter("adId"));
+        long adId = Long.parseLong(request.getParameter("delete_ad"));
         DaoFactory.getAdsDao().deleteAd(adId);
         response.sendRedirect("/profile");
     }
