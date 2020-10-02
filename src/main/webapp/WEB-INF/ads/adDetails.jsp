@@ -17,7 +17,7 @@
 
 <div class="panel panel-info wid">
     <div class="panel-heading">
-        <h1 class="panel-title" >  <c:out value="${ad.title}"/></h1>
+        <h1 class="panel-title" >  <c:out value="${ad.title}"/> </h1>
     </div>
     <div class="panel-body">
         <p> <c:out value="${ad.description}"/></p>
@@ -26,10 +26,10 @@
             <c:out value="${user.email}"/>
             <br>
             <%--    Only display categories list if list is not empty--%>
-            <c:if test="${!cat.isEmpty()}">
+            <c:if test="${!categoriesDao.isEmpty()}">
                 <strong>Categories: </strong>
                 <ul>
-                    <c:forEach var="cat" items="${categories}">
+                    <c:forEach var="cat" items="${categoriesDao.categoriesByAdId(ad.id)}">
                         <li>${cat.name}</li>
                     </c:forEach>
                 </ul>

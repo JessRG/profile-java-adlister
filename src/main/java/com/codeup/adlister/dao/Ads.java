@@ -20,6 +20,9 @@ public interface Ads {
     // method to update an ad
     void updateAd(long id, String title, String description);
 
+    // method to delete an ad
+    void deleteAd(long id);
+
     //method to get the category info from given id
     void setAdCategories(long adId, long catId);
 
