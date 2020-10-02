@@ -42,10 +42,8 @@ public class CreateAdServlet extends HttpServlet {
         );
 
         try {
-            DaoFactory.getAdsDao().insert(ad);
-
             // Grab the recently created ad id
-            long adId = DaoFactory.getAdsDao().all().size();
+            long adId = DaoFactory.getAdsDao().insert(ad);
             // Create the relationship between ad and category
             for(String catId : categories) {
                 DaoFactory.getAdsDao().setAdCategories(adId, Long.parseLong(catId));
