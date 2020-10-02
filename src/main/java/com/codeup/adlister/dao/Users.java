@@ -10,4 +10,6 @@ public interface Users {
     User updatePassword (String password, User user);
     User updateUsername (String username, User user);
     User updateEmail (String email, User user);
+    List<User> allUsers ();
+    void deleteUser (User user);
 }

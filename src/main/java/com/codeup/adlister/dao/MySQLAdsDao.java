@@ -1,13 +1,9 @@
 package com.codeup.adlister.dao;
 
 import com.codeup.adlister.models.Ad;
-import com.codeup.adlister.models.Category;
 import com.codeup.adlister.models.User;
 import com.mysql.cj.jdbc.Driver;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -122,9 +118,41 @@ public class MySQLAdsDao implements Ads {
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setLong(1, adId);
             stmt.setLong(2, catId);
+
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error setting ad categories", e);
+        }
+    }
+
+    // method to search by ad title or ad description
+    @Override
+    public List<Ad> search(String searchTerm) {
+        String query = "SELECT * FROM ads AS a JOIN users AS u ON a.user_id = u.id WHERE a.title LIKE ? OR a.description LIKE ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, "%" + searchTerm + "%");
+            stmt.setString(2, "%" + searchTerm + "%");
+            ResultSet rs = stmt.executeQuery();
+            return createAdsFromResults(rs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // Overload search method to get ads by category id
+    @Override
+    public List<Ad> search(long catId) {
+        String query = "SELECT * FROM ads AS a JOIN ads_categories AS ac ON ac.ad_id = a.id WHERE ac.category_id = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setLong(1, catId);
+            ResultSet rs = stmt.executeQuery();
+            return createAdsFromResults(rs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }
