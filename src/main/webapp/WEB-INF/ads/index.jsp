@@ -8,7 +8,7 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/partials/navbar.jsp" />
-<jsp:include page="../partials/messages.jsp"/>
+<jsp:include page="/WEB-INF/partials/messages.jsp"/>
 <div class="container">
     <h1>Here Are all the ads!</h1>
 
@@ -16,6 +16,7 @@
         <input id="search" name="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Find Ads</button>
     </form>
+    <jsp:include page="/WEB-INF/partials/dropdown.jsp"/>
 
     <c:forEach var="ad" items="${ads}">
         <div class="col-md-6">
@@ -23,6 +24,6 @@
         </div>
     </c:forEach>
 </div>
-
+<jsp:include page="/WEB-INF/partials/scripts.jsp"/>
 </body>
 </html>
