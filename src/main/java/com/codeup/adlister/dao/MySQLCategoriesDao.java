@@ -43,6 +43,7 @@ public class MySQLCategoriesDao implements Categories {
                 " WHERE ac.ad_id = ?";
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setLong(1, adId);
             ResultSet rs = stmt.executeQuery();
             return createCategories(rs);
         } catch (SQLException e) {

@@ -4,8 +4,10 @@
         Dropdown
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-        <c:forEach var="cat" items="${allCategories}">
-            <button class="dropdown-item" type="button" value="${cat.id}">${cat.name}</button>
-        </c:forEach>
+        <form method="GET" action="/ads">
+            <c:forEach var="cat" items="${allCategories}">
+                <button class="dropdown-item" type="submit" name="category" value="${cat.id}">${cat.name}</button>
+            </c:forEach>
+        </form>
     </div>
 </div>

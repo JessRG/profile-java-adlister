@@ -1,9 +1,3 @@
-<%--&lt;%&ndash;--%>
-<%--  Created by IntelliJ IDEA.--%>
-<%--  User: trevaconda--%>
-<%--  Date: 10/1/20--%>
-<%--  Time: 12:26 AM--%>
-<%--  To change this template use File | Settings | File Templates.--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -26,10 +20,10 @@
             <c:out value="${user.email}"/>
             <br>
             <%--    Only display categories list if list is not empty--%>
-            <c:if test="${!categoriesDao.isEmpty()}">
+            <c:if test="${!categoriesList.isEmpty()}">
                 <strong>Categories: </strong>
                 <ul>
-                    <c:forEach var="cat" items="${categoriesDao.categoriesByAdId(ad.id)}">
+                    <c:forEach var="cat" items="${categoriesList}">
                         <li>${cat.name}</li>
                     </c:forEach>
                 </ul>
